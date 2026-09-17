@@ -1110,7 +1110,7 @@ function renderNationalTable() {
     return `
     <tr class="${r.isNasional ? 'total-row' : ''}">
       <td class="cell-name">
-        <span class="cell-title">${esc(nameLabel)} ${r.isBali ? '<small style="color:var(--green);font-weight:700">(Provinsi Bali)</small>' : ''}</span>
+        <span class="cell-title">${esc(nameLabel)} ${r.isBali ? '<small style="color:var(--navy);font-weight:700">(Provinsi Bali)</small>' : ''}</span>
       </td>
       ${INDICATORS.map((i) => `
         <td class="num">${fmtNum(r.real[i.key])}</td>
