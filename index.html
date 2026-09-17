@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#123c35" />
+    <title>Momentum Pelayanan WCD | Dashboard Monitoring</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="Beranda dashboard">
+          <span class="brand-mark">W</span>
+          <span><b>Momentum</b><small>Pelayanan WCD 2026</small></span>
+        </a>
+        <div class="top-meta">
+          <span class="live-dot"></span>
+          <span id="syncStatus">Memuat data...</span>
+          <button class="icon-button" id="refreshButton" title="Muat ulang data" aria-label="Muat ulang data">↻</button>
+        </div>
+      </header>
+
+      <main id="top">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">MONITORING HARIAN</p>
+            <h1>Gerak bersama,<br /><em>layanan berdampak.</em></h1>
+            <p class="hero-text">Pantau capaian pelayanan WCD dari tingkat nasional hingga desa dalam satu tampilan yang ringkas dan mudah ditindaklanjuti.</p>
+            <div class="hero-date"><span class="calendar-icon">▣</span><span>7 September — 10 Oktober 2026</span></div>
+          </div>
+          <div class="hero-art" aria-hidden="true">
+            <div class="sun"></div><div class="hill hill-back"></div><div class="hill hill-front"></div>
+            <div class="figure figure-one"></div><div class="figure figure-two"></div><div class="figure figure-three"></div>
+            <div class="leaf leaf-one">✦</div><div class="leaf leaf-two">✦</div>
+          </div>
+        </section>
+
+        <section class="toolbar">
+          <div class="toolbar-title"><span class="section-kicker">PILIHAN TAMPILAN</span><strong>Snapshot capaian</strong></div>
+          <label>Periode<select id="dateSelect"></select></label>
+          <label>Wilayah / Provinsi<select id="scopeSelect"></select></label>
+          <label>Kabupaten / Kota<select id="kabupatenSelect"></select></label>
+          <label>Kecamatan<select id="kecamatanSelect"></select></label>
+        </section>
+
+        <section class="kpi-grid" id="kpiGrid"></section>
+
+        <!-- LEVEL 1: SKALA NASIONAL (38 PROVINSI) -->
+        <section class="section-block" id="nationalBlock">
+          <div class="section-heading">
+            <div><span class="section-kicker">SKALA NASIONAL</span><h2>Capaian nasional per indikator</h2></div>
+            <p id="nationalHint">Persentase = realisasi PB dibagi target PB tiap provinsi (sheet NASIONAL)</p>
+          </div>
+          <div class="national-grid" id="nationalGrid"></div>
+        </section>
+
+        <!-- LEVEL 2 & 3: SKALA WILAYAH (GRAFIK 9 KAB/KOTA ATAU KECAMATAN) -->
+        <section class="section-block" id="regionalBlock" style="display: none;">
+          <div class="section-heading">
+            <div><span class="section-kicker">SKALA WILAYAH</span><h2 id="regionalTitle">Capaian kabupaten / kota</h2></div>
+            <p id="regionalHint">Pilih salah satu kabupaten / kota pada filter di atas untuk menelusuri capaian kecamatan.</p>
+          </div>
+          <div class="regional-grid" id="regionalGrid"></div>
+        </section>
+
+        <!-- LEVEL 2: PROVINSI BALI (TOP 10 & BOTTOM 10 KECAMATAN SE-BALI) -->
+        <section class="section-block" id="topBottomBlock" style="display: none;">
+          <div class="section-heading">
+            <div><span class="section-kicker">PROVINSI BALI · PERINGKAT KECAMATAN</span><h2>Top 10 Tertinggi &amp; 10 Terbawah Kecamatan se-Bali</h2></div>
+            <p id="topBottomHint">Berdasarkan persentase capaian PB Total terhadap target kecamatan (57 kecamatan se-Bali)</p>
+          </div>
+          <div class="top-bottom-grid" id="topBottomGrid"></div>
+        </section>
+
+        <!-- LEVEL 4: DETAIL DESA / KELURAHAN (REALISASI ABSOLUT) -->
+        <section class="section-block" id="desaBlock" style="display: none;">
+          <div class="section-heading">
+            <div><span class="section-kicker">DETAIL TINGKAT DESA / KELURAHAN</span><h2 id="desaTitle">Realisasi Pelayanan per Desa / Kelurahan</h2></div>
+            <p id="desaHint">Menampilkan angka absolut pelayanan (PB Total, MKJP, KBPP) dan sebaran tempat pelayanan KB di setiap desa.</p>
+          </div>
+          <div class="desa-grid" id="desaGrid"></div>
+        </section>
+
+        <!-- TABEL REKAP (NASIONAL / KABUPATEN / KECAMATAN / DETAIL FASKES LENGKAP) -->
+        <section class="panel wilayah-table-panel" id="tablePanel">
+          <div class="panel-heading">
+            <div>
+              <span class="section-kicker">REKAP DATA</span>
+              <h3 id="tableTitle">Rekap kabupaten / kota</h3>
+              <span class="muted" id="tableNote">Realisasi, target, dan persentase tiap indikator</span>
+            </div>
+            <div class="table-tools">
+              <span class="muted" id="rowCount">0 baris</span>
+              <button class="outline-button" id="downloadButton">↓ Unduh CSV</button>
+            </div>
+          </div>
+          <div class="table-scroll">
+            <table id="dataTable">
+              <thead id="dataTableHead"></thead>
+              <tbody id="dataTableBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </main>
+      <footer><span>© 2026 Tim Data &amp; Informasi</span><span>Dashboard Momentum Pelayanan WCD</span><span class="footer-status" id="footerStatus">● Data terhubung</span></footer>
+    </div>
+    <script src="app.js"></script>
+  </body>
+</html>
